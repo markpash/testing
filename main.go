@@ -42,7 +42,7 @@ func main() {
 
 	l := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 
-	// Print ASN information
+	// Get ASN information, empty if unavailable
 	asn, ispName, err := getASNInfo()
 	if err != nil {
 		fatal(l, err)
@@ -176,12 +176,12 @@ func getASNInfo() (string, string, error) {
 
 	asn, ok := result["asn"].(string)
 	if !ok {
-		return "", "", fmt.Errorf("invalid response format: missing 'asn' field")
+		asn = ""
 	}
 
 	ispName, ok := result["asn_org"].(string)
 	if !ok {
-		return "", "", fmt.Errorf("invalid response format: missing 'asn_org' field")
+		ispName = ""
 	}
 
 	return asn, ispName, nil
